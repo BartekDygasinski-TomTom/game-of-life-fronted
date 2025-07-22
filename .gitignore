@@ -43,3 +43,5 @@ docker-compose.override.yml
 # Optional: if using custom scripts
 /scripts/*.local.js
 /scripts/*.secret.js
+
+.npmrc
