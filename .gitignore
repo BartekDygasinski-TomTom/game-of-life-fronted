@@ -1,0 +1,45 @@
+# Dependencies
+/node_modules
+
+# Build output
+/build
+/dist
+
+# Production
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+
+# Testing
+/coverage
+/jest-test-results.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.env
+.env.*
+!.env.example
+
+# Optional: if using Docker
+docker-compose.override.yml
+
+# Optional: if using custom scripts
+/scripts/*.local.js
+/scripts/*.secret.js
