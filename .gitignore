@@ -5,11 +5,14 @@
 /build
 /dist
 
-# Production
+# Env
 .env.production
 .env.local
 .env.development.local
 .env.test.local
+
+# Kepp dev
+!.env.dev
 
 # Testing
 /coverage
