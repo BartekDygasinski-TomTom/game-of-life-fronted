@@ -3,9 +3,10 @@ import "./GameGrid.css"; // optional for styling
 
 type GameGridProps = {
   gameState: GameState;
+  onCellClick: (row: number, col: number) => void;
 };
 
-const GameGrid = ({ gameState }) => {
+const GameGrid = ({ gameState, onCellClick }) => {
   if (!gameState || !gameState.matrix.length) {
     return <div>No game state available</div>;
   }
@@ -18,6 +19,7 @@ const GameGrid = ({ gameState }) => {
             <div
               key={colIndex}
               className={`game-grid-cell ${cell ? "alive" : "dead"}`}
+              onClick={() => onCellClick?.(rowIndex, colIndex)}
             />
           ))}
         </div>

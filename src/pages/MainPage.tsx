@@ -1,21 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameState } from "../types/GameState";
 import GameGrid from "../components/GameGrid";
 import "./MainPage.css";
 
+const createEmptyGameState = (
+  rows: number,
+  columns: number,
+  previousState?: GameState
+): GameState => {
+  return {
+    matrix: Array.from({ length: rows }, (_, rowIndex) =>
+      Array.from({ length: columns }, (_, colIndex) => {
+        return previousState?.matrix[rowIndex]?.[colIndex] ?? false;
+      })
+    ),
+  };
+};
+
 const MainPage = () => {
-  const [currentState, setCurrentState] = useState<GameState | null>(null);
   const [rows, setRows] = useState(20);
   const [columns, setColumns] = useState(20);
+  const [currentState, setCurrentState] = useState<GameState>(
+    createEmptyGameState(rows, columns)
+  );
+
+  useEffect(() => {
+    setCurrentState((prev) => createEmptyGameState(rows, columns, prev));
+  }, [rows, columns]);
+
+  const toggleCell = (row: number, col: number) => {
+    setCurrentState((prev) => {
+      if (!prev) return prev;
+
+      const newMatrix = prev.matrix.map((r, rowIndex) =>
+        r.map((cell, colIndex) =>
+          rowIndex === row && colIndex === col ? !cell : cell
+        )
+      );
+
+      return { matrix: newMatrix };
+    });
+  };
 
   return (
     <div className="game-page">
       <div className="game-board">
-        {currentState ? (
-          <GameGrid gameState={currentState} />
-        ) : (
-          <p>No board yet</p>
-        )}
+        <GameGrid gameState={currentState} onCellClick={toggleCell} />
       </div>
       <div className="controls">
         <button>Next State</button>
