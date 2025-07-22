@@ -1,0 +1,21 @@
+.game-grid {
+  display: inline-block;
+}
+
+.game-grid-row {
+  display: flex;
+}
+
+.game-grid-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+}
+
+.game-grid-cell.alive {
+  background-color: #4caf50;
+}
+
+.game-grid-cell.dead {
+  background-color: #f1f1f1;
+}

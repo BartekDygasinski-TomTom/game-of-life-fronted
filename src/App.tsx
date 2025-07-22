@@ -1,15 +1,12 @@
 import { createRoot } from "react-dom/client";
 import { Button, Heading, Text, TombacApp } from "tombac";
 import React from "react";
+import MainPage from "./pages/MainPage";
 
 const App = () => {
   return (
     <TombacApp>
-      <Heading level={1}>Hello world!</Heading>
-      <Text>Lorem ipsum dolor sit amet.</Text>
-      <Button onClick={() => alert("Thank you!")} variant="primary">
-        Click me
-      </Button>
+      <MainPage />
     </TombacApp>
   );
 };
