@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { GameState } from "../types/GameState";
 import GameGrid from "../components/GameGrid";
 import "./MainPage.css";
+import { useNextGameStep } from "../hooks/useNextGameStep";
 
 const createEmptyGameState = (
   rows: number,
@@ -24,6 +25,8 @@ const MainPage = () => {
     createEmptyGameState(rows, columns)
   );
 
+  const { getNextStep, loading, error } = useNextGameStep();
+
   useEffect(() => {
     setCurrentState((prev) => createEmptyGameState(rows, columns, prev));
   }, [rows, columns]);
@@ -42,13 +45,18 @@ const MainPage = () => {
     });
   };
 
+  const handleNextStep = async () => {
+    const next = await getNextStep(currentState);
+    if (next) setCurrentState(next);
+  };
+
   return (
     <div className="game-page">
       <div className="game-board">
         <GameGrid gameState={currentState} onCellClick={toggleCell} />
       </div>
       <div className="controls">
-        <button>Next State</button>
+        <button onClick={handleNextStep}>Next State</button>
         <button>Random State</button>
 
         <div className="slider-group">
