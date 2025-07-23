@@ -3,6 +3,7 @@ import { GameState } from "../types/GameState";
 import GameGrid from "../components/GameGrid";
 import "./MainPage.css";
 import { useNextGameStep } from "../hooks/useNextGameStep";
+import { useRandomGameStep } from "../hooks/useRandomGameStep";
 
 const createEmptyGameState = (
   rows: number,
@@ -24,8 +25,14 @@ const MainPage = () => {
   const [currentState, setCurrentState] = useState<GameState>(
     createEmptyGameState(rows, columns)
   );
+  const [alivePercentage, setAlivePercentage] = useState(0.3);
 
   const { getNextStep, loading, error } = useNextGameStep();
+  const {
+    getRandomState,
+    loading: loadingRandom,
+    error: errorRandom,
+  } = useRandomGameStep();
 
   useEffect(() => {
     setCurrentState((prev) => createEmptyGameState(rows, columns, prev));
@@ -50,6 +57,11 @@ const MainPage = () => {
     if (next) setCurrentState(next);
   };
 
+  const handleRandomState = async () => {
+    const random = await getRandomState({ rows, columns, alivePercentage });
+    if (random) setCurrentState(random);
+  };
+
   return (
     <div className="game-page">
       <div className="game-board">
@@ -57,9 +69,21 @@ const MainPage = () => {
       </div>
       <div className="controls">
         <button onClick={handleNextStep}>Next State</button>
-        <button>Random State</button>
+        <button onClick={handleRandomState}>Random State</button>
 
         <div className="slider-group">
+          <label>
+            Live cells %: {(alivePercentage * 100).toFixed(0)}%
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={alivePercentage}
+              onChange={(e) => setAlivePercentage(Number(e.target.value))}
+            />
+          </label>
+
           <label>
             Rows: {rows}
             <input
