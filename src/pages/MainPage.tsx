@@ -4,7 +4,7 @@ import GameGrid from "../components/GameGrid";
 import "./MainPage.css";
 import { useNextGameStep } from "../hooks/useNextGameStep";
 import { useRandomGameStep } from "../hooks/useRandomGameStep";
-import { Box, Button, Input, Label, Slider } from "tombac";
+import { Box, Button, Checkbox, Heading, Input, Label, Slider } from "tombac";
 
 const createEmptyGameState = (
   rows: number,
@@ -21,12 +21,13 @@ const createEmptyGameState = (
 };
 
 const MainPage = () => {
-  const [rows, setRows] = useState(20);
-  const [columns, setColumns] = useState(20);
+  const [rows, setRows] = useState(40);
+  const [columns, setColumns] = useState(60);
   const [currentState, setCurrentState] = useState<GameState>(
     createEmptyGameState(rows, columns)
   );
   const [alivePercentage, setAlivePercentage] = useState(0.3);
+  const [intervalInMilis, setIntervalInMilis] = useState(100);
 
   const { getNextStep, loading, error } = useNextGameStep();
   const {
@@ -34,10 +35,27 @@ const MainPage = () => {
     loading: loadingRandom,
     error: errorRandom,
   } = useRandomGameStep();
+  const [autoPlay, setAutoPlay] = useState(false);
 
   useEffect(() => {
     setCurrentState((prev) => createEmptyGameState(rows, columns, prev));
   }, [rows, columns]);
+
+  useEffect(() => {
+    let interval: number | null = null;
+
+    if (autoPlay) {
+      interval = setInterval(() => {
+        handleNextStep();
+      }, intervalInMilis);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [autoPlay, currentState]);
 
   const toggleCell = (row: number, col: number) => {
     setCurrentState((prev) => {
@@ -69,6 +87,7 @@ const MainPage = () => {
         <GameGrid gameState={currentState} onCellClick={toggleCell} />
       </div>
       <div className="controls">
+        <Heading level={1}>Game of life</Heading>
         <Button hoverEffect="anim-forward" onClick={handleNextStep}>
           Next State
         </Button>
@@ -145,6 +164,40 @@ const MainPage = () => {
                 $w="55u"
                 onChange={(event) => setColumns(Number(event.target.value))}
                 value={columns}
+              />
+            </Box>
+          </Label>
+
+          <Checkbox
+            checked={autoPlay}
+            label="Auto Play"
+            variant="toggle"
+            onChange={() => setAutoPlay((prev) => !prev)}
+          />
+
+          <Label>
+            Interval rate: {intervalInMilis}
+            <Box $alignItems="center" $display="flex">
+              <Slider
+                $w="300u"
+                marks={[
+                  { label: "50", value: 50 },
+                  { label: "100", value: 100 },
+                  { label: "150", value: 150 },
+                  { label: "300", value: 300 },
+                  { label: "500", value: 500 },
+                ]}
+                max={500}
+                min={50}
+                onChange={(e) => setIntervalInMilis(e)}
+                value={intervalInMilis}
+              />
+
+              <Input
+                $ml="1sp"
+                $w="55u"
+                onChange={(event) => setRows(Number(event.target.value))}
+                value={intervalInMilis}
               />
             </Box>
           </Label>
