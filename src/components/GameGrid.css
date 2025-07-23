@@ -9,14 +9,14 @@
 .game-grid-cell {
   width: 20px;
   height: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--neutral-900);
   cursor: pointer;
 }
 
 .game-grid-cell.alive {
-  background-color: #4caf50;
+  background-color: var(--primary);
 }
 
 .game-grid-cell.dead {
-  background-color: #f1f1f1;
+  background-color: var(--neutral-100);
 }

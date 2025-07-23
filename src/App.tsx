@@ -5,7 +5,30 @@ import MainPage from "./pages/MainPage";
 
 const App = () => {
   return (
-    <TombacApp>
+    <TombacApp
+      defineCssVariables
+      theme={{
+        components: {
+          button: {
+            defaultProps: {
+              hoverEffect: "color",
+              size: "m",
+              variant: "primary",
+            },
+          },
+          ripple: {
+            circleFill: "",
+            fill: "",
+          },
+          toggleGroup: {
+            current: undefined,
+            defaultProps: undefined,
+            defaultStyle: undefined,
+            variant: undefined,
+          },
+        },
+      }}
+    >
       <MainPage />
     </TombacApp>
   );
