@@ -5,11 +5,14 @@
 /build
 /dist
 
-# Production
+# Env
 .env.production
 .env.local
 .env.development.local
 .env.test.local
+
+# Kepp dev
+!.env.dev
 
 # Testing
 /coverage
@@ -43,3 +46,5 @@ docker-compose.override.yml
 # Optional: if using custom scripts
 /scripts/*.local.js
 /scripts/*.secret.js
+
+.npmrc
